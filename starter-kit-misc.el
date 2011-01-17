@@ -22,7 +22,7 @@
       inhibit-startup-message t
       transient-mark-mode t
       color-theme-is-global t
-      shift-select-mode nil
+      shift-select-mode t
       mouse-yank-at-point t
       require-final-newline t
       truncate-partial-width-windows nil
