@@ -40,6 +40,7 @@
 (require 'browse-kill-ring)
 (require 'undo-tree)  ; http://www.dr-qubit.org/undo-tree/undo-tree.el
 (require 'elein)
+(require 'align-cljlet)
 
 (global-undo-tree-mode)
 
@@ -133,6 +134,7 @@
 (global-set-key [(control a)] 'mark-whole-buffer) 
 (global-set-key [(control shift j)] 'join-with-next-line)
 (global-set-key [(control ";")] 'iedit-mode)
+(global-set-key [(control c) (control a)] 'align-cljlet)
 ;;(global-set-key [(control +)] 'zoom-frm-in)
 ;;(global-set-key [(control -)] 'zoom-frm-out)
 ;;(global-set-key (vector (list 'control mouse-wheel-up-event)) 'zoom-out)
