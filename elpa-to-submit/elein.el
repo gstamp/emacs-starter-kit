@@ -95,7 +95,7 @@
     (let ((timeout elein-swank-timeout))
       (while (and (> timeout 0)
                   (not (progn (goto-char (point-min))
-                              (search-forward-regexp "Connection opened on local port +\\([0-9]+\\)" nil t)))
+                              (search-forward-regexp "Connection opened on localhost port +\\([0-9]+\\)" nil t)))
                   (not (progn (goto-char (point-min))
                               (search-forward "No project.clj found" nil t))))
         (message "Waiting for swank ..%s.." timeout)
@@ -105,7 +105,7 @@
         (if port
           (progn
             (goto-char (point-min))
-            (search-forward-regexp "Connection opened on local port +\\([0-9]+\\)")
+            (search-forward-regexp "Connection opened on localhost port +\\([0-9]+\\)")
             (slime-connect "localhost" (match-string 1)))
           (message "No swank found.."))))))
 
