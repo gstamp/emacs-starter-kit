@@ -67,7 +67,7 @@
 ;;
 
 
-(defun acl-found-let ()
+(defun acl-found-alignable-form ()
   "Check if we are currently looking at a let form"
   (save-excursion
     (if (looking-at "(")
@@ -82,13 +82,11 @@
              (string-match " *when-let" name)
              (string-match " *if-let" name)
              (string-match " *binding" name)
-             ;; Other possible binding types: loop, with-open, for.
-             ;; Before adding those need to add checks for cases
-             ;; where multiple conditions are added to a single line.
-             ;; Eg: (loop [foo 1 fobble 2] ...)  At the moment the
-             ;; code does not detect that these cases do not need
-             ;; horizontal alignment.
-             ))))))
+             (string-match " *loop" name)
+             (string-match " *with-open" name)
+             )))
+      (if (looking-at "{")
+          t))))
 
 (defun acl-try-go-up ()
   "Go upwards if possible.  If we can't then we're obviously not in an
@@ -99,10 +97,10 @@
      (error "Not in a \"let\" form")))
   t)
 
-(defun acl-find-let ()
+(defun acl-find-alignable-form ()
   "Find the let form by moving looking upwards until nowhere to go"
   (while
-      (if (acl-found-let)
+      (if (acl-found-alignable-form)
           nil
         (acl-try-go-up)
         ))
@@ -136,6 +134,17 @@
                (acl-goto-next-pair)))
       width)))
 
+(defun acl-lines-correctly-paired ()
+  "Determine if all the pairs are on different lines"
+  (save-excursion
+    (let ((current-line (line-number-at-pos)))
+      (while (progn
+               (acl-goto-next-pair))
+        (if (= current-line (line-number-at-pos))
+            (error "multiple pairs on one line")
+          (setq current-line (line-number-at-pos))))))
+  t)
+
 (defun acl-respace-single-let (max-width)
   "Respace the current definition"
   (save-excursion
@@ -154,7 +163,7 @@
       
       )))
 
-(defun acl-respace-let (width)
+(defun acl-respace-form (width)
   "Respace the entire definition"
   (let ((begin (point)))
     (while (progn
@@ -162,20 +171,50 @@
              (acl-goto-next-pair)))
     (indent-region begin (point))))
 
-(defun acl-align-let ()
-  ;; move to start of [
-  (down-list 2)
-  (let ((w (acl-calc-width)))
-    (acl-respace-let w)
-    ))
+(defun acl-align-form ()
+  (if (not (looking-at "{"))
+      ;; move to start of [
+      (down-list 2)
+    (down-list 1))
+  
+  (if (acl-lines-correctly-paired)
+      (let ((w (acl-calc-width)))
+        (acl-respace-form w)
+        )))
+
+;; Borrowed from align-let.el:
+(defun acl-backward-to-code ()
+  "Move point back to the start of a preceding sexp form.
+This gets out of strings, comments, backslash quotes, etc, to a
+place where it makes sense to start examining sexp code forms.
+
+The preceding form is found by a `parse-partial-sexp' starting
+from `beginning-of-defun'.  If it finds nothing then just go to
+`beginning-of-defun'."
+
+  (let ((old (point)))
+    (beginning-of-defun)
+    (let ((parse (parse-partial-sexp (point) old)))
+      (cond ((nth 2 parse) ;; innermost sexp
+             (goto-char (nth 2 parse))
+             (forward-sexp))
+            ((nth 8 parse) ;; outside of comment or string
+             (goto-char (nth 8 parse)))
+            ((nth 5 parse) ;; after a quote char
+             (goto-char (1- (point))))))))
+
 
 (defun align-cljlet ()
   "Align a let form so that the bindings neatly align into columns"
   (interactive)
   (save-excursion
-    (if (acl-find-let)
-        (acl-align-let))))
-
+    (acl-backward-to-code)
+    (if (acl-find-alignable-form)
+        (acl-align-form))))
 
 (provide 'align-cljlet)
 
+(defun delme ()
+  (interactive)
+  (up-list -1)
+  )
