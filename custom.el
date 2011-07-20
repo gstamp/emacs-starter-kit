@@ -95,7 +95,7 @@
   (next-line)
   (delete-indentation) ; Join this line to previous and
 		       ; fix up whitepace at line
-  (delete-horizontal-space))
+  )
 
 (setq slime-protocol-version 'ignore) 
 (defvar slime-port 4005)
