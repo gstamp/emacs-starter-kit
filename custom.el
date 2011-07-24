@@ -97,8 +97,9 @@
 		       ; fix up whitepace at line
   )
 
-(setq slime-protocol-version 'ignore) 
+(setq slime-protocol-version 'ignore)
 (defvar slime-port 4005)
+(defvar durendal-port 4005)
 
 
 (fset 'save-and-compile
@@ -193,6 +194,10 @@
 (add-hook 'post-command-hook 'djcb-set-cursor-according-to-mode)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(add-hook 'clojure-mode-hook 'durendal-enable-auto-compile)
+(add-hook 'slime-repl-mode-hook 'durendal-slime-repl-paredit)
+(add-hook 'sldb-mode-hook 'durendal-dim-sldb-font-lock)
+;;(add-hook 'slime-compilation-finished-hook 'durendal-hide-successful-compile)
 
 ;; Redirect output from other threads.
 ;; Disabled - enabling this seems to cause bugs in slime
