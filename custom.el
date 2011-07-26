@@ -98,9 +98,28 @@
   )
 
 (setq slime-protocol-version 'ignore)
+
+(defun get-buffers-matching-mode (mode)
+  "Returns a list of buffers where their major-mode is equal to MODE"
+  (let ((buffer-mode-matches '()))
+   (dolist (buf (buffer-list))
+     (with-current-buffer buf
+       (if (eq mode major-mode)
+           (add-to-list 'buffer-mode-matches buf))))
+   buffer-mode-matches))
+ 
+(defun multi-occur-in-this-mode ()
+  "Show all lines matching REGEXP in buffers with this major mode."
+  (interactive)
+  (multi-occur
+   (get-buffers-matching-mode major-mode)
+   (car (occur-read-primary-args))))
+
+
+(setq slime-protocol-version 'ignore) 
+
 (defvar slime-port 4005)
 (defvar durendal-port 4005)
-
 
 (fset 'save-and-compile
    "\C-x\C-s\C-c\C-k")
@@ -114,6 +133,7 @@
 (global-set-key [f10] 'eshell)
 (global-set-key [f11] 'ido-kill-buffer)
 
+(global-set-key [(control f2)] 'multi-occur-in-this-mode)
 (global-set-key [(control f4)] 'kill-this-buffer)
 
 (global-set-key [(shift f2)] 'bm-toggle)
