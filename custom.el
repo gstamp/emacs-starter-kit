@@ -63,7 +63,7 @@
 (add-to-list 'auto-mode-alist '("\.feature$" . feature-mode))
 
 (global-auto-revert-mode)  ; auto revert if there are external changes
-(cua-mode t)          ; Windows mode
+;(cua-mode t)          ; Windows mode
 (ido-mode t)          ; Nice buffer searching
 (global-linum-mode 1) ; line numbers on by default
 (show-paren-mode t)   ; show matching parens
@@ -130,7 +130,7 @@
 (global-set-key [f4] 'kmacro-end-or-call-macro)
 (global-set-key [f6] 'save-and-compile)  ; Hit this to eval an entire file
 (global-set-key [f8] 'find-file-at-point)
-(global-set-key [f10] 'eshell)
+(global-set-key [f10] 'ansi-term)
 (global-set-key [f11] 'ido-kill-buffer)
 
 (global-set-key [(control f2)] 'multi-occur-in-this-mode)
@@ -143,19 +143,23 @@
 (global-set-key [(control f6)] 'elein-reswank)
 (global-set-key (kbd "<left-fringe> <mouse-1>") 'bm-toggle-mouse)
 
-(global-set-key [(control shift v)] 'browse-kill-ring)
+;(global-set-key [(control shift v)] 'browse-kill-ring)
 (global-set-key [(control tab)] 'other-window)
 (global-set-key "\r" 'newline-and-indent)
-(global-set-key [(control y)] 'kill-whole-line)
-(global-set-key [(control l)] 'goto-line)
-(global-set-key [(meta right)] 'enlarge-window-horizontally)  ; S = Super/Window
-(global-set-key [(meta left)] 'shrink-window-horizontally)
-(global-set-key [(meta s)] 'isearch-forward-regexp)
-(global-set-key [(meta r)] 'isearch-backward-regexp)
-(global-set-key [(control a)] 'mark-whole-buffer) 
+;(global-set-key [(control y)] 'kill-whole-line)
+;(global-set-key [(control l)] 'goto-line)
+;(global-set-key [(meta right)] 'enlarge-window-horizontally)  ; S = Super/Window
+;(global-set-key [(meta left)] 'shrink-window-horizontally)
+;(global-set-key [(meta s)] 'isearch-forward-regexp)
+;(global-set-key [(meta r)] 'isearch-backward-regexp)
+;(global-set-key [(control a)] 'mark-whole-buffer) 
 (global-set-key [(control shift j)] 'join-with-next-line)
-(global-set-key [(control ";")] 'iedit-mode)
 (global-set-key [(control c) (control a)] 'align-cljlet)
+
+;; interactive search & replace c-; again to finish
+(global-set-key [(control ";")] 'iedit-mode)
+(define-key isearch-mode-map (kbd "C-;") 'iedit-mode)
+
 ;;(global-set-key [(control +)] 'zoom-frm-in)
 ;;(global-set-key [(control -)] 'zoom-frm-out)
 ;;(global-set-key (vector (list 'control mouse-wheel-up-event)) 'zoom-out)
