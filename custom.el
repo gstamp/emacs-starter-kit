@@ -155,8 +155,8 @@
 ;(global-set-key [(control a)] 'mark-whole-buffer) 
 (global-set-key [(control shift j)] 'join-with-next-line)
 (global-set-key [(control c) (control a)] 'align-cljlet)
-(global-set-key [(super up)] 'scroll-up)
-(global-set-key [(super down)] 'scroll-down)
+(global-set-key [(super up)] 'scroll-down)
+(global-set-key [(super down)] 'scroll-up)
 
 ;; interactive search & replace c-; again to finish
 (global-set-key [(control ";")] 'iedit-mode)

@@ -79,4 +79,20 @@
 (if (file-exists-p user-specific-dir)
   (mapc #'load (directory-files user-specific-dir nil ".*el$")))
 
+
+;; Fix environment problems
+(defun env-var-from-shell (varname) 
+  (replace-regexp-in-string 
+   "[[:space:]\n]*$" "" 
+   (shell-command-to-string (concat "$SHELL -l -c 'echo $" varname "'")))) 
+(defun setenv-from-shell (varname) 
+  (setenv varname (env-var-from-shell varname))) 
+(when window-system 
+  (setenv-from-shell "SOMESHELLVAR") 
+  (setenv-from-shell "SOMEOTHERSHELLVAR") 
+  (let ((path-from-shell (env-var-from-shell "PATH"))) 
+    (setenv "PATH" (concat path-from-shell ":" (getenv "PATH"))) 
+    (setq exec-path (append exec-path 
+                            (split-string path-from-shell path-separator))))) 
+
 ;;; init.el ends here
