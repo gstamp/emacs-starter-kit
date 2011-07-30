@@ -21,6 +21,7 @@
 (setq autopair-autowrap t)
 (setq slime-protocol-version 'ignore)   ; ignore slime complaining
                                         ; about the version mismatch
+(setq font-lock-verbose nil)
 
 ;; Add marmalade packages
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
