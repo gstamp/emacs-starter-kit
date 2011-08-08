@@ -96,3 +96,4 @@
                             (split-string path-from-shell path-separator))))) 
 
 ;;; init.el ends here
+(put 'erase-buffer 'disabled nil)

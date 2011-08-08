@@ -22,6 +22,13 @@
 (setq slime-protocol-version 'ignore)   ; ignore slime complaining
                                         ; about the version mismatch
 (setq font-lock-verbose nil)
+(grep-compute-defaults)
+(setq grep-find-command
+      "find . -path '*/.svn' -prune -o -type f -print | xargs -e grep -I -n -e ")
+(eval-after-load "grep"
+  '(progn
+     (add-to-list 'grep-find-ignored-files ".tmp")
+     (add-to-list 'grep-find-ignored-directories ".svn")))
 
 ;; Add marmalade packages
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
@@ -75,6 +82,7 @@
 (load-file "~/.emacs.d/my-colour-themes/color-theme-railscasts.el")
 (load-file "~/.emacs.d/my-colour-themes/color-theme-zenburn.el")
 (color-theme-railscasts)
+;(color-theme-solarized 'light) -- cant get this one working
 ; Others I like:
 ;  (color-theme-blackboard)  
 ;  (color-theme-robin-hood)
@@ -98,6 +106,13 @@
 		       ; fix up whitepace at line
   )
 
+;; Make open line work more like VI
+(defadvice open-line (before new-open-line activate)
+  (end-of-visible-line))
+(defadvice open-line (after after-open-line activate)
+  (forward-line 1)
+  (indent-according-to-mode))
+
 (setq slime-protocol-version 'ignore)
 
 (defun get-buffers-matching-mode (mode)
@@ -115,6 +130,16 @@
   (multi-occur
    (get-buffers-matching-mode major-mode)
    (car (occur-read-primary-args))))
+
+;; this will indent the yanked region automatically in the provided
+;; modes
+(defadvice yank (after indent-region activate)
+  (if (member major-mode '(emacs-lisp-mode scheme-mode lisp-mode
+                                           clojure-mode
+                                           c-mode c++-mode objc-mode
+                                           LaTeX-mode TeX-mode))
+      (indent-region (region-beginning) (region-end) nil)))
+
 
 
 (setq slime-protocol-version 'ignore) 
@@ -236,7 +261,7 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
- '(erc-hide-list (quote ("JOIN" "NICK" "QUIT"))))
+ '(inhibit-startup-screen t))
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
   ;; If you edit it by hand, you could mess it up, so be careful.
