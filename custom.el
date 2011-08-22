@@ -106,6 +106,9 @@
 		       ; fix up whitepace at line
   )
 
+;; duplicate line - requires open line from below.
+(global-set-key "\C-c\d" "\C-a\C-k\C-y\C-o\C-y")
+
 ;; Make open line work more like VI
 (defadvice open-line (before new-open-line activate)
   (end-of-visible-line))
