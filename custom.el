@@ -89,7 +89,16 @@
 ;  (color-theme-twilight)
 ;  (color-theme-zenburn)
 
-
+(defun toggle-windows-split()
+  "Switch back and forth between one window and whatever split of windows we might have in the frame. The idea is to maximize the current buffer, while being able to go back to the previous split of windows in the frame simply by calling this command again."
+  (interactive)
+  (if (not(window-minibuffer-p (selected-window)))
+      (progn
+        (if (< 1 (count-windows))
+            (progn
+              (window-configuration-to-register ?u)
+              (delete-other-windows))
+          (jump-to-register ?u)))))
 
 (defun iwb ()
   "indent whole buffer"
@@ -163,6 +172,7 @@
 (global-set-key [f11] 'ido-kill-buffer)
 
 (global-set-key [(control f2)] 'multi-occur-in-this-mode)
+(global-set-key [(control f3)] 'highlight-symbol-at-point)
 (global-set-key [(control f4)] 'kill-this-buffer)
 
 (global-set-key [(shift f2)] 'bm-toggle)
@@ -172,16 +182,9 @@
 (global-set-key [(control f6)] 'elein-reswank)
 (global-set-key (kbd "<left-fringe> <mouse-1>") 'bm-toggle-mouse)
 
-;(global-set-key [(control shift v)] 'browse-kill-ring)
+(define-key global-map (kbd "C-`") 'toggle-windows-split)
 (global-set-key [(control tab)] 'other-window)
 (global-set-key "\r" 'newline-and-indent)
-;(global-set-key [(control y)] 'kill-whole-line)
-;(global-set-key [(control l)] 'goto-line)
-;(global-set-key [(meta right)] 'enlarge-window-horizontally)  ; S = Super/Window
-;(global-set-key [(meta left)] 'shrink-window-horizontally)
-;(global-set-key [(meta s)] 'isearch-forward-regexp)
-;(global-set-key [(meta r)] 'isearch-backward-regexp)
-;(global-set-key [(control a)] 'mark-whole-buffer) 
 (global-set-key [(control shift j)] 'join-with-next-line)
 (global-set-key [(control c) (control a)] 'align-cljlet)
 (global-set-key [(super up)] 'scroll-down)
@@ -190,11 +193,6 @@
 ;; interactive search & replace c-; again to finish
 (global-set-key [(control ";")] 'iedit-mode)
 (define-key isearch-mode-map (kbd "C-;") 'iedit-mode)
-
-;;(global-set-key [(control +)] 'zoom-frm-in)
-;;(global-set-key [(control -)] 'zoom-frm-out)
-;;(global-set-key (vector (list 'control mouse-wheel-up-event)) 'zoom-out)
-;;(global-set-key (vector (list 'control mouse-wheel-down-event)) 'zoom-in)
 
 (eval-after-load 'paredit
   '(progn
