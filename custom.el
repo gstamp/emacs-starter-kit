@@ -50,6 +50,9 @@
 (require 'elein)
 (require 'align-cljlet)
 
+;; c-c left, c-c right - to move between previous open window settings
+(winner-mode 1)
+
 (global-undo-tree-mode)
 
 ;; auto complete plugin
