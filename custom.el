@@ -22,6 +22,8 @@
 (setq slime-protocol-version 'ignore)   ; ignore slime complaining
                                         ; about the version mismatch
 (setq font-lock-verbose nil)
+(idle-highlight-mode nil)               ; hates it
+
 (grep-compute-defaults)
 (setq grep-find-command
       "find . -path '*/.svn' -prune -o -type f -print | xargs -e grep -I -n -e ")
