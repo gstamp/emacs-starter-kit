@@ -22,9 +22,13 @@
 (setq slime-protocol-version 'ignore)   ; ignore slime complaining
                                         ; about the version mismatch
 (setq font-lock-verbose nil)
+(setq slime-net-coding-system 'utf-8-unix) ; defaults to iso-8895-1
+                                        ; encoding otherwise.
 (idle-highlight-mode nil)               ; hates it
 
 (grep-compute-defaults)
+
+;; seemingly not working?
 (setq grep-find-command
       "find . -path '*/.svn' -prune -o -type f -print | xargs -e grep -I -n -e ")
 (eval-after-load "grep"
@@ -167,8 +171,11 @@
 (fset 'save-and-compile
    "\C-x\C-s\C-c\C-k")
 
+(fset 'kill-opposite-buffer
+      "\C-xo\C-xk\C-m\C-xo")
+
 (global-set-key [f1] 'ido-switch-buffer)
-(global-set-key [f2] 'grep-find)
+(global-set-key [f2] 'lgrep)
 (global-set-key [f3] 'kmacro-start-macro-or-insert-counter)
 (global-set-key [f4] 'kmacro-end-or-call-macro)
 (global-set-key [f6] 'save-and-compile)  ; Hit this to eval an entire file
@@ -179,6 +186,7 @@
 (global-set-key [(control f2)] 'multi-occur-in-this-mode)
 (global-set-key [(control f3)] 'highlight-symbol-at-point)
 (global-set-key [(control f4)] 'kill-this-buffer)
+(global-set-key "\C-c\C-l" 'kill-opposite-buffer)
 
 (global-set-key [(shift f2)] 'bm-toggle)
 (global-set-key [(shift f3)] 'bm-next)
