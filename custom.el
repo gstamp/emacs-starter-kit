@@ -195,6 +195,8 @@
 (global-set-key [(control f6)] 'elein-reswank)
 (global-set-key (kbd "<left-fringe> <mouse-1>") 'bm-toggle-mouse)
 
+(global-set-key "\C-x\C-m" 'execute-extended-command) ;; M-x replacement 
+(global-set-key "\C-c\C-m" 'execute-extended-command) ;; M-x replacement 
 (define-key global-map (kbd "C-`") 'toggle-windows-split)
 (global-set-key [(control tab)] 'other-window)
 (global-set-key "\r" 'newline-and-indent)
@@ -228,6 +230,7 @@
 
 (defalias 'qrr 'query-replace-regexp)
 (defalias 'lml 'list-matching-lines)
+(defalias 'qrr 'query-replace-regexp)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
