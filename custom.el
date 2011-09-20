@@ -24,7 +24,7 @@
 (setq font-lock-verbose nil)
 (setq slime-net-coding-system 'utf-8-unix) ; defaults to iso-8895-1
                                         ; encoding otherwise.
-(idle-highlight-mode nil)               ; hates it
+;;(idle-highlight-mode nil)               ; hates it
 
 (grep-compute-defaults)
 
