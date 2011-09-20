@@ -10,7 +10,7 @@
 (setq ido-enable-flex-matching t) ; enable fuzzy matching
 (setq backup-directory-alist
       (list (cons ".*" (expand-file-name "~/.emacsbackup/")))) ; backup
-                                                               ; elsewhere
+                                        ; elsewhere
 (setq version-control t)                ; backup multiple versions
 (setq delete-old-versions t)            ; delete the older ones
 (setq kept-new-versions 10)             ; keep x new ones
@@ -21,10 +21,10 @@
 (setq autopair-autowrap t)
 (setq slime-protocol-version 'ignore)   ; ignore slime complaining
                                         ; about the version mismatch
-(setq font-lock-verbose nil)
 (setq slime-net-coding-system 'utf-8-unix) ; defaults to iso-8895-1
                                         ; encoding otherwise.
-;;(idle-highlight-mode nil)               ; hates it
+(set-cursor-color "yellow")
+(setq set-cursor-type 'box)
 
 (grep-compute-defaults)
 
@@ -80,23 +80,24 @@
 (add-to-list 'auto-mode-alist '("\.feature$" . feature-mode))
 
 (global-auto-revert-mode)  ; auto revert if there are external changes
-;(cua-mode t)          ; Windows mode
+                                        ;(cua-mode t)          ; Windows mode
 (ido-mode t)          ; Nice buffer searching
 (global-linum-mode 1) ; line numbers on by default
 (show-paren-mode t)   ; show matching parens
 
-; Load up some colour themes
+                                        ; Load up some colour themes
 (load-file "~/.emacs.d/my-colour-themes/color-theme-twilight.el")
 (load-file "~/.emacs.d/my-colour-themes/color-theme-blackboard.el")
 (load-file "~/.emacs.d/my-colour-themes/color-theme-railscasts.el")
 (load-file "~/.emacs.d/my-colour-themes/color-theme-zenburn.el")
-(color-theme-railscasts)
-;(color-theme-solarized 'light) -- cant get this one working
-; Others I like:
-;  (color-theme-blackboard)  
-;  (color-theme-robin-hood)
-;  (color-theme-twilight)
-;  (color-theme-zenburn)
+;;(color-theme-railscasts)
+(color-theme-zenburn)
+                                        ;(color-theme-solarized 'light) -- cant get this one working
+                                        ; Others I like:
+                                        ;  (color-theme-blackboard)
+                                        ;  (color-theme-robin-hood)
+                                        ;  (color-theme-twilight)
+                                        ;  (color-theme-zenburn)
 
 (defun toggle-windows-split()
   "Switch back and forth between one window and whatever split of windows we might have in the frame. The idea is to maximize the current buffer, while being able to go back to the previous split of windows in the frame simply by calling this command again."
@@ -121,7 +122,7 @@
   (interactive)
   (next-line)
   (delete-indentation) ; Join this line to previous and
-		       ; fix up whitepace at line
+                                        ; fix up whitepace at line
   )
 
 ;; duplicate line - requires open line from below.
@@ -139,12 +140,12 @@
 (defun get-buffers-matching-mode (mode)
   "Returns a list of buffers where their major-mode is equal to MODE"
   (let ((buffer-mode-matches '()))
-   (dolist (buf (buffer-list))
-     (with-current-buffer buf
-       (if (eq mode major-mode)
-           (add-to-list 'buffer-mode-matches buf))))
-   buffer-mode-matches))
- 
+    (dolist (buf (buffer-list))
+      (with-current-buffer buf
+        (if (eq mode major-mode)
+            (add-to-list 'buffer-mode-matches buf))))
+    buffer-mode-matches))
+
 (defun multi-occur-in-this-mode ()
   "Show all lines matching REGEXP in buffers with this major mode."
   (interactive)
@@ -163,13 +164,13 @@
 
 
 
-(setq slime-protocol-version 'ignore) 
+(setq slime-protocol-version 'ignore)
 
 (defvar slime-port 4005)
 (defvar durendal-port 4005)
 
 (fset 'save-and-compile
-   "\C-x\C-s\C-c\C-k")
+      "\C-x\C-s\C-c\C-k")
 
 (fset 'kill-opposite-buffer
       "\C-xo\C-xk\C-m\C-xo")
@@ -195,8 +196,8 @@
 (global-set-key [(control f6)] 'elein-reswank)
 (global-set-key (kbd "<left-fringe> <mouse-1>") 'bm-toggle-mouse)
 
-(global-set-key "\C-x\C-m" 'execute-extended-command) ;; M-x replacement 
-(global-set-key "\C-c\C-m" 'execute-extended-command) ;; M-x replacement 
+(global-set-key "\C-x\C-m" 'execute-extended-command) ;; M-x replacement
+(global-set-key "\C-c\C-m" 'execute-extended-command) ;; M-x replacement
 (define-key global-map (kbd "C-`") 'toggle-windows-split)
 (global-set-key [(control tab)] 'other-window)
 (global-set-key "\r" 'newline-and-indent)
@@ -232,37 +233,6 @@
 (defalias 'lml 'list-matching-lines)
 (defalias 'qrr 'query-replace-regexp)
 
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Change cursor color according to mode; inspired by
-;; http://www.emacswiki.org/emacs/ChangingCursorDynamically
-(setq djcb-read-only-color       "gray")
-;; valid values are t, nil, box, hollow, bar, (bar . WIDTH), hbar,
-;; (hbar. HEIGHT); see the docs for set-cursor-type
-
-(setq djcb-read-only-cursor-type 'hbar)
-(setq djcb-overwrite-color       "red")
-(setq djcb-overwrite-cursor-type 'box)
-(setq djcb-normal-color          "yellow")
-(setq djcb-normal-cursor-type    'bar)
-
-(defun djcb-set-cursor-according-to-mode ()
-  "change cursor color and type according to some minor modes."
-
-  (cond
-    (buffer-read-only
-      (set-cursor-color djcb-read-only-color)
-      (setq cursor-type djcb-read-only-cursor-type))
-    (overwrite-mode
-      (set-cursor-color djcb-overwrite-color)
-      (setq cursor-type djcb-overwrite-cursor-type))
-    (t 
-      (set-cursor-color djcb-normal-color)
-      (setq cursor-type djcb-normal-cursor-type))))
-
-(add-hook 'post-command-hook 'djcb-set-cursor-according-to-mode)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (add-hook 'clojure-mode-hook 'durendal-enable-auto-compile)
 (add-hook 'slime-repl-mode-hook 'durendal-slime-repl-paredit)
 (add-hook 'sldb-mode-hook 'durendal-dim-sldb-font-lock)
@@ -274,14 +244,14 @@
 
 
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(inhibit-startup-screen t))
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  )
