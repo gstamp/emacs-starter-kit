@@ -4,15 +4,39 @@
 
 (require 'cl)
 
-(defvar starter-kit-packages (list 'idle-highlight-mode
+;; original
+;; (defvar starter-kit-packages (list 'idle-highlight-mode
+;;                                    'ruby-mode
+;;                                    'inf-ruby
+;;                                    'css-mode
+;;                                    'yaml-mode
+;;                                    'find-file-in-project
+;;                                    'magit
+;;                                    'gist
+;;                                    )
+;;   "Libraries that should be installed by default.")
+
+(defvar starter-kit-packages (list 'clojure-mode
+                                   'clojure-test-mode
+                                   'swank-clojure
+                                   'swank-cdt
+                                   'elein
+                                   'bm
+                                   'lua-mode
+                                   'midje-mode
+                                   'maxframe
+                                   'js2-mode
+                                   'htmlize
                                    'ruby-mode
                                    'inf-ruby
                                    'css-mode
                                    'yaml-mode
                                    'find-file-in-project
                                    'magit
-                                   'gist)
+                                   'gist
+                                   )
   "Libraries that should be installed by default.")
+
 
 (defun starter-kit-elpa-install ()
   "Install all starter-kit packages that aren't installed."
