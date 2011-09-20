@@ -128,7 +128,7 @@
 ;; duplicate line - requires open line from below.
 (global-set-key "\C-cd" "\C-a\C-k\C-y\C-o\C-y")
 
-;; Make open line work more like VI
+;; Make open-line work more like VI (bound to ctrl-o)
 (defadvice open-line (before new-open-line activate)
   (end-of-visible-line))
 (defadvice open-line (after after-open-line activate)
@@ -205,6 +205,8 @@
 (global-set-key [(control c) (control a)] 'align-cljlet)
 (global-set-key [(super up)] 'scroll-down)
 (global-set-key [(super down)] 'scroll-up)
+(global-set-key (kbd "<S-return>") 'open-line)
+(global-set-key (kbd "C-S-o") '"\C-p\C-o") ; open line above
 
 ;; interactive search & replace c-; again to finish
 (global-set-key [(control ";")] 'iedit-mode)
