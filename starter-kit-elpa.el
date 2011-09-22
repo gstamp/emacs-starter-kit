@@ -34,6 +34,8 @@
                                    'find-file-in-project
                                    'magit
                                    'gist
+                                   'graphviz-dot-mode
+                                   'feature-mode
                                    )
   "Libraries that should be installed by default.")
 

@@ -23,6 +23,7 @@
                                         ; about the version mismatch
 (setq slime-net-coding-system 'utf-8-unix) ; defaults to iso-8895-1
                                         ; encoding otherwise.
+(setq lua-indent-level 4)
 (set-cursor-color "yellow")
 (setq set-cursor-type 'box)
 
