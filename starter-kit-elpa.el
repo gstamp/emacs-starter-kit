@@ -19,7 +19,6 @@
 (defvar starter-kit-packages (list 'clojure-mode
                                    'clojure-test-mode
                                    'swank-clojure
-                                   'swank-cdt
                                    'elein
                                    'bm
                                    'lua-mode
