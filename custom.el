@@ -26,6 +26,7 @@
 (setq lua-indent-level 4)
 (set-cursor-color "yellow")
 (setq set-cursor-type 'box)
+(setq redisplay-dont-pause t)
 
 (grep-compute-defaults)
 
