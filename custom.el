@@ -57,6 +57,10 @@
 (require 'undo-tree)  ; http://www.dr-qubit.org/undo-tree/undo-tree.el
 (require 'elein)
 (require 'align-cljlet)
+(require 'dot-mode)
+
+;; always turn on dot-mode
+(add-hook 'find-file-hooks 'dot-mode-on)
 
 ;; c-c left, c-c right - to move between previous open window settings
 (winner-mode 1)
@@ -198,6 +202,8 @@
 (global-set-key [(control f6)] 'elein-reswank)
 (global-set-key (kbd "<left-fringe> <mouse-1>") 'bm-toggle-mouse)
 
+(global-set-key [(control ?.)] (lambda () (interactive) (dot-mode 1)
+                                 (message "Dot mode activated.")))
 (global-set-key "\C-x\C-m" 'execute-extended-command) ;; M-x replacement
 (global-set-key "\C-c\C-m" 'execute-extended-command) ;; M-x replacement
 (define-key global-map (kbd "C-`") 'toggle-windows-split)
