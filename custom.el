@@ -58,6 +58,7 @@
 (require 'elein)
 (require 'align-cljlet)
 (require 'dot-mode)
+(require 'clojure-mode)
 
 ;; always turn on dot-mode
 (add-hook 'find-file-hooks 'dot-mode-on)
@@ -168,7 +169,13 @@
                                            LaTeX-mode TeX-mode))
       (indent-region (region-beginning) (region-end) nil)))
 
-
+;; Pinched from Programothesis.  Thanks!
+(defun define-function ()
+  (interactive)
+  (let ((name (symbol-at-point)))
+    (backward-paragraph)
+    (insert "\n(defn " (symbol-name name) " [])\n")
+    (backward-char 3)))
 
 (setq slime-protocol-version 'ignore)
 
@@ -202,6 +209,7 @@
 (global-set-key [(control f6)] 'elein-reswank)
 (global-set-key (kbd "<left-fringe> <mouse-1>") 'bm-toggle-mouse)
 
+(define-key clojure-mode-map (kbd "C-c f") 'define-function)
 (global-set-key [(control ?.)] (lambda () (interactive) (dot-mode 1)
                                  (message "Dot mode activated.")))
 (global-set-key "\C-x\C-m" 'execute-extended-command) ;; M-x replacement
