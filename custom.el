@@ -262,6 +262,13 @@ If point was already at that position, move point to beginning of line."
      (define-key paredit-mode-map (kbd "<C-right>") nil)
      (define-key paredit-mode-map "\M-r" nil)))
 
+;; Stops the mini buffer when switching back to emacs with mouse
+(defun stop-using-minibuffer ()
+  "kill the minibuffer"
+  (when (and (>= (recursion-depth) 1) (active-minibuffer-window))
+    (abort-recursive-edit)))
+(add-hook 'mouse-leave-buffer-hook 'stop-using-minibuffer)
+
 ;; This adds an extra keybinding to interactive search (C-s) that runs
 ;; occur on the current search string/regexp, immediately showing all
 ;; hits in the entire buffer. I use it all the time now.
