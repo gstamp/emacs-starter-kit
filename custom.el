@@ -24,9 +24,12 @@
 (setq slime-net-coding-system 'utf-8-unix) ; defaults to iso-8895-1
                                         ; encoding otherwise.
 (setq lua-indent-level 4)
-(set-cursor-color "yellow")
 (setq set-cursor-type 'box)
 (setq redisplay-dont-pause t)
+(set-cursor-color "yellow")
+(put 'erase-buffer 'disabled nil)
+(put 'upcase-region 'disabled nil)
+(put 'narrow-to-region 'disabled nil)
 
 (grep-compute-defaults)
 
@@ -160,6 +163,17 @@
    (get-buffers-matching-mode major-mode)
    (car (occur-read-primary-args))))
 
+(defun smart-beginning-of-line ()
+  "Move point to first non-whitespace character or beginning-of-line.
+
+Move point to the first non-whitespace character on this line.
+If point was already at that position, move point to beginning of line."
+  (interactive) ; Use (interactive "^") in Emacs 23 to make shift-select work
+  (let ((oldpos (point)))
+    (back-to-indentation)
+    (and (= oldpos (point))
+         (beginning-of-line))))
+
 ;; this will indent the yanked region automatically in the provided
 ;; modes
 (defadvice yank (after indent-region activate)
@@ -212,6 +226,7 @@
 (define-key clojure-mode-map (kbd "C-c f") 'define-function)
 (global-set-key [(control ?.)] (lambda () (interactive) (dot-mode 1)
                                  (message "Dot mode activated.")))
+(global-set-key "\C-c\C-v" 'slime-eval-print-last-expression)
 (global-set-key "\C-x\C-m" 'execute-extended-command) ;; M-x replacement
 (global-set-key "\C-c\C-m" 'execute-extended-command) ;; M-x replacement
 (define-key global-map (kbd "C-`") 'toggle-windows-split)
@@ -223,6 +238,7 @@
 (global-set-key [(super down)] 'scroll-up)
 (global-set-key (kbd "<S-return>") 'open-line)
 (global-set-key (kbd "C-S-o") '"\C-p\C-o") ; open line above
+(global-set-key [home] 'smart-beginning-of-line)
 
 ;; interactive search & replace c-; again to finish
 (global-set-key [(control ";")] 'iedit-mode)
