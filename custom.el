@@ -23,6 +23,7 @@
                                         ; about the version mismatch
 (setq slime-net-coding-system 'utf-8-unix) ; defaults to iso-8895-1
                                         ; encoding otherwise.
+(setq font-lock-verbose nil)  ; stop slime giving me annoying messages
 (setq lua-indent-level 4)
 (setq set-cursor-type 'box)
 (setq redisplay-dont-pause t)
@@ -30,6 +31,13 @@
 (put 'erase-buffer 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
+
+;; map meta to the command key
+(setq mac-option-key-is-meta nil)
+(setq mac-command-key-is-meta t)
+(setq mac-command-modifier 'meta)
+(setq mac-option-modifier nil)
+
 
 (grep-compute-defaults)
 
