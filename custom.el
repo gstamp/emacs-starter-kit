@@ -65,6 +65,7 @@
 (require 'mark-more-like-this)
 (require 'rename-sgml-tag)
 (require 'sgml-mode)
+(require 'expand-region)
 
 ;; always turn on dot-mode
 (add-hook 'find-file-hooks 'dot-mode-on)
@@ -245,6 +246,7 @@ If point was already at that position, move point to beginning of line."
 ;; You can use this mode to mark similar occuring text then type over it.
 (global-set-key (kbd "C-<") 'mark-previous-like-this)
 (global-set-key (kbd "C->") 'mark-next-like-this)
+(global-set-key (kbd "C-@") 'er/expand-region)
 (define-key sgml-mode-map (kbd "C-c C-r") 'rename-sgml-tag)
 
 ;; interactive search & replace c-; again to finish
