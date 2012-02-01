@@ -24,6 +24,7 @@
                                    'lua-mode
                                    'midje-mode
                                    'maxframe
+                                   'expand-region
                                    'js2-mode
                                    'htmlize
                                    'ruby-mode
