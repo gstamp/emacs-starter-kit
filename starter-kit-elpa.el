@@ -36,6 +36,7 @@
                                    'gist
                                    'graphviz-dot-mode
                                    'feature-mode
+                                   'highlight-parentheses
                                    )
   "Libraries that should be installed by default.")
 

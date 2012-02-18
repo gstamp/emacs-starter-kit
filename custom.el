@@ -35,7 +35,7 @@
 
 ;; map meta to the command key
 (setq mac-option-key-is-meta nil)
-(setq mac-command-key-is-meta t)
+(setq mac-left-command-key-is-meta t)
 (setq mac-command-modifier 'meta)
 (setq mac-option-modifier nil)
 
@@ -75,6 +75,15 @@
 (require 'rename-sgml-tag)
 (require 'sgml-mode)
 (require 'expand-region)
+
+;; turn on paredit for clojure-mode
+(defun turn-on-paredit () (paredit-mode 1))
+(add-hook 'clojure-mode-hook 'turn-on-paredit)
+
+;; auto complete mode
+(require 'auto-complete-config)
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+(ac-config-default)
 
 ;; always turn on dot-mode
 (add-hook 'find-file-hooks 'dot-mode-on)
@@ -147,6 +156,57 @@
   (delete-indentation) ; Join this line to previous and
                                         ; fix up whitepace at line
   )
+
+(defun slime-send-dwim (arg)
+  "Send the appropriate forms to REPL to be evaluated."
+  (interactive "P")
+  (save-excursion
+    (cond 
+     ;;Region selected - evaluate region
+     ((not (equal mark-active nil))
+      (copy-region-as-kill (mark) (point)))
+     ;; At/before sexp - evaluate next sexp
+     ((or (looking-at "(")
+          (save-excursion
+            (ignore-errors (forward-char 1))
+            (looking-at "(")))
+      (forward-list 1)
+      (let ((end (point))
+            (beg (save-excursion
+                   (backward-list 1)
+                   (point))))
+        (copy-region-as-kill beg end)))
+     ;; At/after sexp - evaluate last sexp
+     ((or (looking-at ")")
+          (save-excursion
+            (backward-char 1)
+            (looking-at ")")))
+      (if (looking-at ")")
+          (forward-char 1))
+      (let ((end (point))
+            (beg (save-excursion
+                   (backward-list 1)
+                   (point))))
+        (copy-region-as-kill beg end)))
+     ;; Default - evaluate enclosing top-level sexp
+     (t (progn
+          (while (ignore-errors (progn
+                                  (backward-up-list)
+                                  t)))
+          (forward-list 1)
+          (let ((end (point))
+                (beg (save-excursion
+                       (backward-list 1)
+                       (point))))
+            (copy-region-as-kill beg end)))))
+    (set-buffer (slime-output-buffer))
+    (unless (eq (current-buffer) (window-buffer))
+      (pop-to-buffer (current-buffer) t))
+    (goto-char (point-max))
+    (yank)
+    (if arg (progn
+	      (slime-repl-return)
+	      (other-window 1)))))
 
 ;; duplicate line - requires open line from below.
 (global-set-key "\C-cd" "\C-a\C-k\C-y\C-o\C-y")
@@ -256,6 +316,10 @@ If point was already at that position, move point to beginning of line."
 (global-set-key (kbd "C-<") 'mark-previous-like-this)
 (global-set-key (kbd "C->") 'mark-next-like-this)
 (global-set-key (kbd "C-@") 'er/expand-region)
+(global-set-key [(control c) (control ,)] 'slime-send-dwim)
+(global-set-key [(control c) (control .)] '(lambda ()
+                                             (interactive)
+                                             (slime-send-dwim 1)))
 (define-key sgml-mode-map (kbd "C-c C-r") 'rename-sgml-tag)
 
 ;; interactive search & replace c-; again to finish
