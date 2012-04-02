@@ -39,7 +39,6 @@
 (setq mac-command-modifier 'meta)
 (setq mac-option-modifier nil)
 
-
 (grep-compute-defaults)
 
 ;; seemingly not working?
@@ -263,6 +262,23 @@ If point was already at that position, move point to beginning of line."
     (backward-paragraph)
     (insert "\n(defn " (symbol-name name) " [])\n")
     (backward-char 3)))
+
+(defadvice kill-ring-save (before slick-copy activate compile)
+  "When called interactively with no active region, copy the current line."
+  (interactive
+   (if mark-active
+       (list (region-beginning) (region-end))
+     (progn
+       (message "Current line is copied.")
+       (list (line-beginning-position) (line-beginning-position 2)) ) ) ))
+
+(defadvice kill-region (before slick-copy activate compile)
+  "When called interactively with no active region, cut the current line."
+  (interactive
+   (if mark-active
+       (list (region-beginning) (region-end))
+     (progn
+       (list (line-beginning-position) (line-beginning-position 2)) ) ) ))
 
 (setq slime-protocol-version 'ignore)
 

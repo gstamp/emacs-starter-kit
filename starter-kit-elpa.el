@@ -37,6 +37,7 @@
                                    'graphviz-dot-mode
                                    'feature-mode
                                    'highlight-parentheses
+                                   'align-cljlet
                                    )
   "Libraries that should be installed by default.")
 
